@@ -20,6 +20,7 @@ function App() {
     const getData = async () => {
       try {
         const data = await API.graphql(graphqlOperation(query));
+        console.log(data)
         setRestaurants(data.data.listRestaurants.items);
       } catch (error) {
         console.log(error)
