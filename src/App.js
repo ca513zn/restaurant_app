@@ -1,8 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+
+import { API, graphqlOperation } from "aws-amplify";
+
+const query = `
+query {
+  listRestaurants {
+    items {
+      id name description locationg
+    }
+  }
+}
+`;
 
 function App() {
+  const [restaurants, setRestaurants] = React.useState([]);
+  React.useEffect(() => {
+    const getData = async () => {
+      const data = await API.graphql(graphqlOperation(query));
+      setRestaurants(data.data.listRestaurants.items);
+    };
+    getData();
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
@@ -10,14 +30,9 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {restaurants.map((rest, i) => (
+          <p key={i}>{rest.name}</p>
+        ))}
       </header>
     </div>
   );
