@@ -18,8 +18,12 @@ function App() {
   const [restaurants, setRestaurants] = React.useState([]);
   React.useEffect(() => {
     const getData = async () => {
-      const data = await API.graphql(graphqlOperation(query));
-      setRestaurants(data.data.listRestaurants.items);
+      try {
+        const data = await API.graphql(graphqlOperation(query));
+        setRestaurants(data.data.listRestaurants.items);
+      } catch (error) {
+        console.log(error)
+      }
     };
     getData();
   }, []);
